@@ -147,15 +147,15 @@
                     <p class="text-gray-300">Access your account and journey details</p>
                 </div>
                 
-                <form class="space-y-6">
+                <form class="space-y-6"   id="forme">
                     <div>
-                        <label class="block text-gray-300 mb-2">Email Address</label>
-                        <input type="email" class="form-input w-full px-4 py-3" placeholder="Enter your email">
+                        <label class="block text-gray-300 mb-2" >Email Address</label>
+                        <input type="email" class="form-input w-full px-4 py-3" placeholder="Enter your email" id="email">
                     </div>
                     
                     <div>
                         <label class="block text-gray-300 mb-2">Password</label>
-                        <input type="password" class="form-input w-full px-4 py-3" placeholder="Enter your password">
+                        <input type="password" class="form-input w-full px-4 py-3" placeholder="Enter your password" id="password">
                     </div>
                     
                     <div class="flex items-center justify-between">
@@ -269,6 +269,41 @@
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
         });
+
+
+
+       const forme = document.getElementById('forme');
+
+       forme.addEventListener('submit' ,(e)=>{
+         e.preventDefault();  // madirx reload okhlini ana n9ol lik achno dir
+
+         const email=document.getElementById('email').value.trim();
+         const password=document.getElementById('password').value.trim();
+         
+         if(email && password){
+             const user ={
+                email,
+                isLoggedIn :true,
+                username : email.split('@')[0],
+               
+             };
+             localStorage.setItem('userSession', JSON.stringify(user));  // fonction kathwel objet dyalna l string f file json
+             localStorage.setItem('password', password); 
+           window.location.href = 'index.html';
+         }
+         else{
+            alert('Veuillez entrer un email et un mot de passe.');
+         }
+
+
+       });
+
+
+
+    
+
+
+
     </script>
 </body>
 </html>

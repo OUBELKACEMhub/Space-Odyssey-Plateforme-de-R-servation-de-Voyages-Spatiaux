@@ -86,6 +86,10 @@
         .nav-link {
             position: relative;
         }
+
+        #logoutBtn {
+            display: none;
+        }
         
         .nav-link::after {
             content: '';
@@ -178,7 +182,13 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+
+    <div class="flex justify-between  items-center p-8">
+       <div  id="userName"  class="font-orbitron text-xl font-bold text-glow text-center p-8 text-white "></div>
+   <button type="submit" class="btn-primary text-white gap-6 py-3 rounded-lg font-bold glow  display none"  id="logoutBtn" class="">Login out </button> 
+    </div>
+  
+   <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 relative z-10">
         <!-- Hero Section -->
         <section class="py-16 md:py-24 text-center">
@@ -406,6 +416,28 @@
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
         });
+
+const savedUser = JSON.parse(localStorage.getItem('userSession'));
+const logOut=document.getElementById('logoutBtn');
+
+if(logOut){
+    logOut.addEventListener('click' , ()=>{
+    localStorage.removeItem('userSession');
+    window.location.reload();
+    })
+}
+
+if (savedUser && savedUser.isLoggedIn) {
+    const userName = document.getElementById('userName');
+    
+    if (userName) {
+        userName.textContent = "Welcome " + savedUser.username;
+        
+    }
+}
+
+
+
     </script>
 </body>
 </html>
