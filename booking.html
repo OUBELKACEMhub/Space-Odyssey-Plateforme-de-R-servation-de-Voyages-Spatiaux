@@ -102,21 +102,82 @@
   </div>
 
   <!-- Booking Form -->
-  <form class="card w-full max-w-3xl p-8 space-y-6   ml-200 ">
+  <form class="card w-full max-w-3xl p-8 space-y-6   ml-200 "  id="formB">
     
-    <!-- Journey Details -->
-    <div>
-      <h3 class=" font-orbitron  text-xl font-semibold text-cyan-300 mb-4 text-white">Journey Details</h3>
+         <h3 class=" font-orbitron  text-xl font-semibold text-cyan-300 mb-4 text-white">Journey Details</h3>
       <div class="space-y-4">
         <div class="text-white">
           <label class="block mb-1 text-sm">Destination</label>
-          <select class="w-full p-3 bg-transparent border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <select class="w-full p-3 bg-transparent border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"  id="dest">
             <option class="bg-gray-800  ">Select your destination</option>
             <option class="bg-gray-800">Mars</option>
             <option class="bg-gray-800">Moon</option>
             <option class="bg-gray-800">Europa</option>
+            <option class="bg-gray-800">Titan</option>
+            <option class="bg-gray-800">Orbital Station</option>
+            <option class="bg-gray-800">Venus Cloud Cities</option>
           </select>
         </div>
+        </div > 
+        <div   id="changedElements">
+
+        </div>
+  </form>
+    <!-- Footer -->
+    <footer class="bg-space-dark border-t border-neon-blue/20 py-8 mt-12 relative z-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center">
+                            <i class="fas fa-rocket text-white text-sm"></i>
+                        </div>
+                        <span class="font-orbitron text-lg">SpaceVoyager</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">© 2023 SpaceVoyager. All rights reserved.</p>
+                </div>
+                
+                <div class="flex space-x-6 mb-4 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm">Contact us: info@spacevoyager.com</p>
+                    <p class="text-gray-400 text-sm">+1 (800) SPACE-TRIP</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+
+<script>
+const select = document.getElementById('dest');
+
+
+function displayForme(option){
+  const changedElements = document.getElementById('changedElements');
+  changedElements.innerHTML= "";
+
+
+  
+  
+
+   if(option=="Mars"  || option == ""){
+       changedElements.innerHTML=`
+
         <div class="text-white">
           <label class="block mb-1 text-sm">Departure Date</label>
           <input type="date" class="w-full p-3 bg-transparent border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400">
@@ -171,46 +232,53 @@
     <p class="text-center text-sm text-gray-400">
       By confirming, you agree to our <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and <a href="#" class="text-cyan-400 hover:underline">Space Travel Agreement</a>.
     </p>
-  </form>
+                  
+
+   `;
+    }
+
+else if(option=="Moon"){
+
+  // code form moon
+}
+
+else if(option=="Europa"){
+
+  // code form moon
+}
+else if(option=="Titan"){
+
+  // code form moon
+}
+else if(option=="Orbital Station"){
+
+  // code form moon
+}
+else if(option=="Venus Cloud Cities"){
+
+  // code form moon
+}
 
 
 
-    <!-- Footer -->
-    <footer class="bg-space-dark border-t border-neon-blue/20 py-8 mt-12 relative z-10">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center">
-                            <i class="fas fa-rocket text-white text-sm"></i>
-                        </div>
-                        <span class="font-orbitron text-lg">SpaceVoyager</span>
-                    </div>
-                    <p class="text-gray-400 text-sm">© 2023 SpaceVoyager. All rights reserved.</p>
-                </div>
-                
-                <div class="flex space-x-6 mb-4 md:mb-0">
-                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-neon-blue transition-colors text-xl">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-                
-                <div class="text-center md:text-right">
-                    <p class="text-gray-400 text-sm">Contact us: info@spacevoyager.com</p>
-                    <p class="text-gray-400 text-sm">+1 (800) SPACE-TRIP</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+  }
 
-</body>
+    displayForme(select.value);
+
+    select.addEventListener('change', () => {
+    displayForme(select.value);
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
 </html>
