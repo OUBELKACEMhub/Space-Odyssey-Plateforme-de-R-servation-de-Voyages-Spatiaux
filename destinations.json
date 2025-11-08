@@ -1,9 +1,7 @@
-
-{
-  "destinations": [
+ [
     {
       "id": "moon",
-      "name": "The Moon",
+      "name": "Moon",
       "planet": "Earth's Moon",
       "image": "/images/destinations/moon.jpg",
       "thumbnail": "/images/destinations/moon-thumb.jpg",
@@ -218,4 +216,3 @@
       "bookingCode": "SV-VENUS"
     }
   ]
-}

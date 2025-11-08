@@ -7,29 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'space-dark': '#0a0a18',
-                        'space-blue': '#1a1a2e',
-                        'space-purple': '#16213e',
-                        'neon-blue': '#0ea5e9',
-                        'neon-purple': '#8b5cf6',
-                        'neon-cyan': '#06b6d4',
-                    },
-                    fontFamily: {
-                        'orbitron': ['Orbitron', 'sans-serif'],
-                        'exo': ['Exo 2', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'space-pattern': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgxMzUpIj48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMWExYTJlIi8+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBzdHJva2U9IiMyNjEzZTQiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+')",
-                    }
-                }
-            }
-        }
-    </script>
+     
     <style>
         body {
             background: linear-gradient(to bottom, #0a0a18, #1a1a2e, #16213e);
@@ -50,6 +28,14 @@
                 radial-gradient(circle at 90% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
                 radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 20%);
             z-index: -1;
+        }
+
+        .welcoMessage {
+            font-family: 'orbitron';
+            margin-left: 8rem;
+            margin-top: 1rem;
+            padding: 50px;
+            font-size: x-large;
         }
         
         .star {
@@ -87,9 +73,7 @@
             position: relative;
         }
 
-        #logoutBtn {
-            display: none;
-        }
+        
         
         .nav-link::after {
             content: '';
@@ -104,6 +88,10 @@
         
         .nav-link:hover::after {
             width: 100%;
+        }
+
+        #userName{
+            font-size: 2.2em;
         }
         
         .planet-card {
@@ -145,46 +133,16 @@
     <div id="stars-container"></div>
     
     <!-- Navigation -->
-    <nav class="bg-space-dark/80 backdrop-blur-md border-b border-neon-blue/20 sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center glow">
-                    <i class="fas fa-rocket text-white"></i>
-                </div>
-                <a href="index.html" class="font-orbitron text-xl font-bold text-glow">SpaceVoyager</a>
-            </div>
-            
-            <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="nav-link hover:text-neon-blue transition-colors">Home</a>
-                <a href="destinations.html" class="nav-link hover:text-neon-blue transition-colors">Destinations</a>
-                <a href="booking.html" class="nav-link hover:text-neon-blue transition-colors">Booking</a>
-                <a href="about.html" class="nav-link hover:text-neon-blue transition-colors">About</a>
-                <a href="login.html" class="nav-link hover:text-neon-blue transition-colors"  id="logIn">Login</a>
-            </div>
-            
-            <!-- Mobile menu button -->
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden bg-space-dark/90 backdrop-blur-md">
-            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
-                <a href="index.html" class="hover:text-neon-blue transition-colors py-2 border-b border-neon-blue/20">Home</a>
-                <a href="destinations.html" class="hover:text-neon-blue transition-colors py-2 border-b border-neon-blue/20">Destinations</a>
-                <a href="booking.html" class="hover:text-neon-blue transition-colors py-2 border-b border-neon-blue/20">Booking</a>
-                <a href="about.html" class="hover:text-neon-blue transition-colors py-2 border-b border-neon-blue/20">About</a>
-                <a href="login.html" class="hover:text-neon-blue transition-colors py-2" id="logInBtn"  >Login</a>
-            </div>
-        </div>
+    <nav class="bg-space-dark/80  w-full backdrop-blur-md border-b border-neon-blue/20 sticky top-0 z-50" id="dev">  
     </nav>
 
 
+    <div class="welcoMessage"><h1 id="welcome"></h1></div>
+    
+
+
     <div class="flex   items-center p-8">
-       <div  id="userName"  class="font-orbitron text-xl font-bold text-glow text-center p-8 text-white "></div> 
+       <div  id="userName"  class="font-orbitron text-xl font-bold text-glow text-center p-8 text-white   "></div> 
     </div>
   
    <!-- Main Content -->
@@ -379,105 +337,45 @@
         </div>
     </footer>
 
+   
+
+
+
+
+<script  src="navUpdate.js">
+ </script>
+
     <script>
-        // Create stars background
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            const starCount = 150;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Random size between 1-3px
-                const size = Math.random() * 2 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // Random position
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                // Random animation delay
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
-                container.appendChild(star);
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'space-dark': '#0a0a18',
+                        'space-blue': '#1a1a2e',
+                        'space-purple': '#16213e',
+                        'neon-blue': '#0ea5e9',
+                        'neon-purple': '#8b5cf6',
+                        'neon-cyan': '#06b6d4',
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'exo': ['Exo 2', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'space-pattern': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgxMzUpIj48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMWExYTJlIi8+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBzdHJva2U9IiMyNjEzZTQiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+')",
+                    }
+                }
             }
         }
-        
-    // Mobile menu toggle
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('open');
-    });
-
-    // Stars background
-    function createStars() {
-        const container = document.getElementById('stars-container');
-        const starCount = 150;
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = Math.random() * 2 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 5}s`;
-            container.appendChild(star);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        createStars();
-
-        const logInBtn = document.getElementById('logInBtn'); 
-        const logInNav = document.getElementById('logIn'); 
-        const userName = document.getElementById('userName');
-        const savedUser = JSON.parse(localStorage.getItem('userSession'));
-
-        function updateLoginState() {
-            if (savedUser && savedUser.isLoggedIn) {
-                
-                if (logInBtn) logInBtn.textContent = 'LogOut';
-                if (logInNav) logInNav.textContent = 'LogOut';
-                if (userName) userName.textContent = "Welcome " + savedUser.username;
-            } else {
-                // المستخدم غير مسجّل الدخول
-                if (logInBtn) logInBtn.textContent = 'Login';
-                if (logInNav) logInNav.textContent = 'Login';
-                if (userName) userName.textContent = '';
-            }
-        }
-
-     
-        updateLoginState();
-
-        // Event listener   for switch Login/Logout
-        if (logInBtn) {
-            logInBtn.addEventListener('click', () => {
-                if (savedUser && savedUser.isLoggedIn) {
-                    localStorage.removeItem('userSession'); // Logout
-                } else {
-                    window.location.href = 'login.html'; // Login
-                }
-                window.location.reload();
-            });
-        }
-
-        if (logInNav) {
-            logInNav.addEventListener('click', () => {
-                if (savedUser && savedUser.isLoggedIn) {
-                    localStorage.removeItem('userSession'); // Logout
-                } else {
-                    window.location.href = 'login.html'; // Login
-                }
-                window.location.reload();
-            });
-        }
-    });
-
-
     </script>
+
+
+
+
+
+
+
+
+
 </body>
 </html>
