@@ -27,8 +27,10 @@
             }
         }
     </script>
+
    
   <style>
+   
     body {
             background: linear-gradient(to bottom, #0a0a18, #1a1a2e, #16213e);
             background-attachment: fixed;
@@ -100,7 +102,12 @@
         <div>
 
 
-    <div  id="centent"> ok </div> 
+    <div  id="centent"> 
+    
+   
+   
+    
+     </div> 
     
 
 
@@ -187,14 +194,6 @@ const changedElements = document.getElementById('changedElements');
 
 
 
-
-
-
-
-
-
-
-
 fetch('destinations.json')
   .then(response => response.json())
   .then(destinations => {
@@ -216,7 +215,7 @@ let crafts=[
   "Medical bay",
   "Recreation facilities"
   ],
-  "image": "/images/spacecraft/odyssey.jpg",
+  "image": "https://static.scientificamerican.com/dam/m/7440c4ab31c0f704/webimage-saw0524Scol-Spaceplane.png?m=1715807725.594&w=1200",
   "usedFor": ["mars", "europa", "titan", "venus-clouds"]
   },
 
@@ -234,7 +233,7 @@ let crafts=[
   "Comfort seating",
   "Quick boarding"
   ],
-  "image": "/images/spacecraft/lunar-express.jpg",
+ "image": "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2017/07/moon-express-2.jpg?resize=1200,675&key=3e2d8d5a&watermark",
   "usedFor": ["moon"]
   },
   
@@ -252,39 +251,67 @@ let crafts=[
   "Research facilities",
   "Hotel amenities"
   ],
-  "image": "/images/spacecraft/orbital-one.jpg",
+ "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Venturestar1.jpg/330px-Venturestar1.jpg",
   "usedFor": ["orbital-station"]
   }
 ];
 
 
-  function displayForme(option){
-    const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
-    if(!dest) return;
 
-    // Image principale
+
+
+function displayForme(option) {
+    const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
+    if (!dest) return; 
+
+
     centent.innerHTML = `
-      <div id="imagebooking" class="border border-cyan-300">
-        <img src="${dest.image}" alt="imageBooking" class="w-full h-64 object-cover rounded" />
+      <div id="imagebooking" class="border border-cyan-300 rounded-md focus:outline-none focus:ring-2 ">
+        <img src="" alt="imageBooking" class="w-full h-64 object-cover rounded" id="imgdest">
       </div>
       <br>
       <h3 class="text-white text-sm mb-1">Crafts</h3>
-      <div class="border border-cyan-300 flex justify-center gap-4 p-5">
-        <img src="images/destinations/cargo cruft.jpg" alt="craft" class="flex-1 w-full h-60 object-cover rounded" />
-        <div  class=" text-white  text-[14px]" style="display : block;   ">
-        <div class="decr flex-1 ">${crafts[0].description} </div>
-        <br>
-        <p>Name     :${crafts[0].name}</p>
-        <p>capacity :${crafts[0].capacity}</p>
-        <p>maxSpeed :${crafts[0].maxSpeed}</p>
-        <p>maxSpeed :${crafts[0].description}</p>
-        <p>features    :${crafts[0].description}</p>
+      <div class="border border-cyan-300 flex justify-center gap-4 p-5 rounded-md focus:outline-none focus:ring-2 ">
+        <img src="" alt="craft" class="flex-1 w-full h-60 object-cover rounded" id="imgcraft">
+        <div class=" text-white text-[14px]" style="display : block;">
+          <p class="text-gray-400 text-sm" id="namecraft"></p>
+          <br>
+          <div class="decr flex-1 text-white-100 text-[18px]" id="desccraft"></div>
+          <br>
+          <button class="flex justify-center items-center bg-sky-900 w-20 h-10">Learn More</button>
         </div>
       </div>
-      <br>
     `;
 
-    // Accommodation cards
+    // 2. NOW, get references to the elements you just created.
+    const imgdest = document.getElementById('imgdest');
+    const imgcraft = document.getElementById('imgcraft');
+    const namecraft = document.getElementById('namecraft');
+    const desccraft = document.getElementById('desccraft');
+
+    
+    imgdest.src = dest.image;
+    
+    if (
+      dest.name.toLowerCase() === "mars" ||
+      dest.name.toLowerCase() === "europa" ||
+      dest.name.toLowerCase() === "titan" ||
+      dest.name.toLowerCase() === "venus cloud cities"
+    ) {
+      imgcraft.src = crafts[0].image;
+      namecraft.textContent = crafts[0].name;
+      desccraft.textContent = crafts[0].description;
+    } else if (dest.name.toLowerCase() === "moon") {
+      imgcraft.src = crafts[1].image;
+      namecraft.textContent = crafts[1].name;
+      desccraft.textContent = crafts[1].description;
+    } else if (dest.name.toLowerCase() === "orbital station") {
+      imgcraft.src = crafts[2].image;
+      namecraft.textContent = crafts[2].name;
+      desccraft.textContent = crafts[2].description;
+    }
+
+    // Accommodation cards (This part was already correct)
     const accommodations = dest.accommodations || ["standard", "luxury", "zero-g"];
     changedElements.innerHTML = `
       <label class="block mb-2 text-sm text-white">Accommodation Type</label>
@@ -299,13 +326,12 @@ let crafts=[
     `;
   }
 
-  // Initial load
-  displayForme(select.value);
-
   // Change event
   select.addEventListener('change', () => displayForme(select.value));
 })
 .catch(error => console.error('Error loading destinations JSON:', error));
-
+if (select.value !== "Select your destination") {
+  displayForme(select.value);
+}
 </script>
 </html>

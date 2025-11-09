@@ -15,7 +15,7 @@
   "Medical bay",
   "Recreation facilities"
   ],
-  "image": "/images/spacecraft/odyssey.jpg",
+  "image": "https://science.nasa.gov/wp-content/uploads/2024/03/mars-odyssey-instruments-gamma-ray-spectrometer-1.jpg",
   "usedFor": ["mars", "europa", "titan", "venus-clouds"]
   },
 
@@ -33,10 +33,10 @@
   "Comfort seating",
   "Quick boarding"
   ],
-  "image": "/images/spacecraft/lunar-express.jpg",
+  "image": "https://crowdsourcingweek.com/wp-content/uploads/2018/10/Moon-Express-lunar-landing-craft.png.webp",
   "usedFor": ["moon"]
   },
-  
+
   {
   "id": "orbital-one",
   "name": "Orbital One",
@@ -51,7 +51,7 @@
   "Research facilities",
   "Hotel amenities"
   ],
-  "image": "/images/spacecraft/orbital-one.jpg",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Venturestar1.jpg/330px-Venturestar1.jpg",
   "usedFor": ["orbital-station"]
   }
 ]
