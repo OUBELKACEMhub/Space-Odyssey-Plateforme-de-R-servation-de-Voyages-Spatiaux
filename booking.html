@@ -54,16 +54,12 @@
     }
 
     #imagebooking {
-      height: 20rem;
-      width: 100%;
       z-index: 1111;
       padding: 20px;
-      
-     
     }
      #imagebooking img{
       width: 100%;
-      height: 100%;
+      height: 20rem;
      }
   </style>
 </head>
@@ -104,19 +100,7 @@
         <div>
 
 
-         
-    <div class="  border border-cyan-300"  id="imagebooking">
-      <img src="" alt="imageBooking"   id="imgB">
-    </div>
-    <br>
-    
-    <h3 class="block mb-1 text-sm">Cafts</h3>
-    <div class="  border border-cyan-300"  style=" display: flex;justify-content: center;height: 15rem; width: 100%; z-index: 1111; padding: 20px;">
-      <img src="" alt="imageCraft"   id="imgB" style="flex: 1;">
-      <div class="decr"  style="flex: 1;"> hello</div>
-    </div>
-    <br>
-
+    <div  id="centent"> ok </div> 
     
 
 
@@ -194,9 +178,20 @@
 <script src="navUpdate.js"></script>
 
 <script>
-
 const select = document.getElementById('dest');
-const imgB=document.getElementById("imgB");
+const centent = document.getElementById('centent');
+const changedElements = document.getElementById('changedElements');
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -204,119 +199,113 @@ fetch('destinations.json')
   .then(response => response.json())
   .then(destinations => {
 
-function displayForme(option){
-  const changedElements = document.getElementById('changedElements');
-  changedElements.innerHTML= "";
+    
+let crafts=[
+  {
+  "id": "odyssey",
+  "name": "SV Odyssey",
+  "class": "Interplanetary",
+  "description": "Our flagship interplanetary spacecraft designed for long-duration missions to Mars and beyond.eatures advanced life support and artificial gravity.",
+  "capacity": 50,
+  "maxSpeed": "100,000 km/h",
+  "range": "Unlimited (solar powered)",
+  "features": [
+  "Artificial gravity ring",
+  "Advanced radiation shielding",
+  "Hydroponic gardens",
+  "Medical bay",
+  "Recreation facilities"
+  ],
+  "image": "/images/spacecraft/odyssey.jpg",
+  "usedFor": ["mars", "europa", "titan", "venus-clouds"]
+  },
 
-
+  {
+  "id": "lunar-express",
+  "name": "Lunar Express",
+  "class": "Lunar Shuttle",
+  "description": "High-frequency shuttle service between Earth and Moon. Quick, comfortable, and reliable for lunar tourism.",
+  "capacity": 25,
+  "maxSpeed": "40,000 km/h",
+  "range": "Earth-Moon round trip",
+  "features": [
+  "Rapid transit capability",
+  "Panoramic windows",
+  "Comfort seating",
+  "Quick boarding"
+  ],
+  "image": "/images/spacecraft/lunar-express.jpg",
+  "usedFor": ["moon"]
+  },
   
-  
+  {
+  "id": "orbital-one",
+  "name": "Orbital One",
+  "class": "Space Station",
+  "description": "Luxury orbital habitat serving as both destination and transfer station for interplanetary journeys.",
+  "capacity": 100,
+  "maxSpeed": "27,000 km/h (orbital velocity)",
+  "range": "Low Earth Orbit",
+  "features": [
+  "Multiple viewing decks",
+  "Zero-g recreation areas",
+  "Research facilities",
+  "Hotel amenities"
+  ],
+  "image": "/images/spacecraft/orbital-one.jpg",
+  "usedFor": ["orbital-station"]
+  }
+];
 
-   if(option=="Mars"  || option == ""){
-    imgB.src='/images/destinations/marsBack.jpg';
-       changedElements.innerHTML=`
 
-        
-        
-       
-      
+  function displayForme(option){
+    const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
+    if(!dest) return;
 
-          <label class="block mb-2 text-sm text-white">Accommodation Type</label>
-          <div class="grid md:grid-cols-3 gap-4">
-
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
-              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
-            </div>
-
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
-              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
-            </div>
-
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
-              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
-            </div>
-          </div>
-        
-          
-        
-        
-          
-          
-     
-  
-                
-
-   `;
-    }
-
-else if(option=="Moon"){
-     imgB.src='images/destinations/walkMonn.jpg';
-    changedElements.innerHTML=`
-        <div>
-          <label class="block mb-2 text-sm text-white">Accommodation Type</label>
-          <div class="grid md:grid-cols-3 gap-4">
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
-              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
-            </div>
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
-              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
-            </div>
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
-              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
-            </div>
-          </div>
+    // Image principale
+    centent.innerHTML = `
+      <div id="imagebooking" class="border border-cyan-300">
+        <img src="${dest.image}" alt="imageBooking" class="w-full h-64 object-cover rounded" />
+      </div>
+      <br>
+      <h3 class="text-white text-sm mb-1">Crafts</h3>
+      <div class="border border-cyan-300 flex justify-center gap-4 p-5">
+        <img src="images/destinations/cargo cruft.jpg" alt="craft" class="flex-1 w-full h-60 object-cover rounded" />
+        <div  class=" text-white  text-[14px]" style="display : block;   ">
+        <div class="decr flex-1 ">${crafts[0].description} </div>
+        <br>
+        <p>Name     :${crafts[0].name}</p>
+        <p>capacity :${crafts[0].capacity}</p>
+        <p>maxSpeed :${crafts[0].maxSpeed}</p>
+        <p>maxSpeed :${crafts[0].description}</p>
+        <p>features    :${crafts[0].description}</p>
         </div>
       </div>
-    </div>               
-     
-   `;
-}
+      <br>
+    `;
 
-else if(option=="Europa"){
-imgB.src='images/destinations/europaw.jpg';
-  // code form moon
-}
-else if(option=="Titan"){
+    // Accommodation cards
+    const accommodations = dest.accommodations || ["standard", "luxury", "zero-g"];
+    changedElements.innerHTML = `
+      <label class="block mb-2 text-sm text-white">Accommodation Type</label>
+      <div class="grid md:grid-cols-3 gap-4">
+        ${accommodations.map(acc => `
+          <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
+            <h4 class="font-semibold text-cyan-200 mb-1">${acc.charAt(0).toUpperCase() + acc.slice(1)} Cabin</h4>
+            <p class="text-sm text-gray-400">Comfortable private quarters with ${acc} amenities</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
 
-  // code form moon
-}
-else if(option=="Orbital Station"){
+  // Initial load
+  displayForme(select.value);
 
-  // code form moon
-}
-else if(option=="Venus Cloud Cities"){
-
-  // code form moon
-}
-
-}
-   
-
-    displayForme(select.value);
-
-    select.addEventListener('change', () => {
-    displayForme(select.value);
-});
-
- })
-  .catch(error => console.error('Error loading destinations JSON:', error));
-
+  // Change event
+  select.addEventListener('change', () => displayForme(select.value));
+})
+.catch(error => console.error('Error loading destinations JSON:', error));
 
 </script>
-
-
-
-
-
-
-
-
-
-
 </html>
