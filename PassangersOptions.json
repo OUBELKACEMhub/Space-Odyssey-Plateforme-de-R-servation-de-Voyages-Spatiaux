@@ -28,6 +28,8 @@
       "defaultPassengerCount": 3
     }
   ],
+
+  
   "departureLocations": [
     {
       "id": "spaceport-alpha",
