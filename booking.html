@@ -101,31 +101,45 @@
             <option class="bg-gray-800">Venus Cloud Cities</option>
           </select>
         </div>
-        </div > 
+        </div> 
+
+
         <div  id="centent"> </div> 
         <div class="text-white">
           <label class="block mb-1 text-sm">Departure Date</label>
           <input type="date" class="w-full p-3 bg-transparent border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400">
         </div>
         <div>
-
-
-    
-    
-
-
           <label class="block mb-1 text-sm text-white">Number of Passengers</label>
           <div class="flex gap-4" >
-            <label class="text-white"><input type="radio" name="passengers" checked> Solo Traveler</label>
-            <label class="text-white"><input type="radio" name="passengers"> Couple (2)</label>
-            <label  class="text-white"><input type="radio" name="passengers"> Group (3–6)</label>
+            <label class="text-white"  ><input type="radio" name="passengers" checked  id="selectS"> Solo Traveler</label>
+            <label class="text-white"><input type="radio" name="passengers"  id="selectC"> Couple (2)</label>
+            <label  class="text-white"><input type="radio" name="passengers" id="selectG"> Group (3–6)</label>
           </div>
         </div>
-        <div   id="changedElements">
-
+    
+       <div>
+          <label class="block mb-2 text-sm text-white">Accommodation Type</label>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
+              <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
+              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
+            </div>
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
+              <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
+              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
+            </div>
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
+              <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
+              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
+            </div>
         </div>
+        </div>
+          
+        
          <!-- Personal Information -->
-    <div>
+
+    <div id="PersonalInformation ">
       <h3 class="font-orbitron  text-xl font-semibold text-cyan-300 mb-4 text-white">Personal Information</h3>
       <div class="grid md:grid-cols-2 gap-4">
         <input type="text" placeholder="First Name" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
@@ -133,12 +147,15 @@
         <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
         <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
       </div>
+      <br>
+      <div class="grid md:grid-cols-2 gap-4"  id="addPassenger">  </div>
+
       <textarea placeholder="Any special requirements or notes..." class="w-full mt-4 p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400"></textarea>
     </div>
 
     <!-- Buttons -->
     <div class="flex flex-col gap-4">
-      <button type="button" class="w-full py-3 border border-cyan-400 text-cyan-300 rounded-md hover:bg-cyan-800/20 transition text-white">Add Passenger</button>
+      <button type="button" class="w-full py-3 border border-cyan-400 text-cyan-300 rounded-md hover:bg-cyan-800/20 transition text-white"    id="addpBtn">Add Passenger</button>
       <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition">Confirm Booking</button>
     </div>
 
@@ -190,10 +207,52 @@
 <script>
 const select = document.getElementById('dest');
 const centent = document.getElementById('centent');
-const changedElements = document.getElementById('changedElements');
+const changedElements = document.getElementById('AccommodationType');
+
+const addpBtn = document.getElementById('addpBtn');
+const selectS = document.getElementById('selectS');
+const selectC = document.getElementById('selectC');
+const selectG = document.getElementById('selectG');
+
+const addPassenger=document.getElementById('addPassenger');
 
 
 
+ function ajoutepassager( n){
+    for(let i=1;i<n;i++){
+      addPassenger.innerHTML+=`
+        <input type="text" placeholder="First Name" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="text" placeholder="Last Name" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">     
+    `;
+    }
+    
+  }
+
+ 
+function checkSelection() {
+  if (selectS.checked) {
+ 
+    addpBtn.style.display = "none";
+    addPassenger.innerHTML="";
+  } 
+  else if (selectC.checked) {
+    addpBtn.style.display = "block";
+  addpBtn.addEventListener('click',ajoutepassager(2));
+  } 
+   if (selectG.checked) {
+    addpBtn.style.display = "block";
+    addpBtn.addEventListener('click',ajoutepassager(5)0);
+  } 
+ 
+}
+
+
+selectS.addEventListener('input', checkSelection);
+selectC.addEventListener('input', checkSelection);
+selectG.addEventListener('input', checkSelection);
+window.addEventListener('load', checkSelection);
 
 
 
@@ -281,15 +340,12 @@ let crafts=[
     }
   ];
 
- 
-
-
-
-
 
 function displayForme(option) {
     const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
     if (!dest) return; 
+    
+
 
 centent.innerHTML = `
   <div id="imagebooking" class="border border-cyan-300 rounded-md overflow-hidden relative">
@@ -364,6 +420,7 @@ centent.innerHTML = `
     `;
   }
 
+
   // Change event
   select.addEventListener('change', () => displayForme(select.value));
 })
@@ -371,5 +428,6 @@ centent.innerHTML = `
 if (select.value !== "Select your destination") {
   displayForme(select.value);
 }
+
 </script>
 </html>
