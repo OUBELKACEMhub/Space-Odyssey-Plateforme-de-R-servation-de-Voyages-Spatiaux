@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <script>
         tailwind.config = {
             theme: {
@@ -118,22 +120,8 @@
           </div>
         </div>
     
-       <div>
-          <label class="block mb-2 text-sm text-white">Accommodation Type</label>
-          <div class="grid md:grid-cols-3 gap-4">
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
-              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
-            </div>
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
-              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
-            </div>
-            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-              <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
-              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
-            </div>
-        </div>
+       <div id="changedElements">
+          
         </div>
           
         
@@ -217,36 +205,72 @@ const selectG = document.getElementById('selectG');
 const addPassenger=document.getElementById('addPassenger');
 
 
+var count=1;
+ function ajoutepassager(){
+    count++;
+    addpBtn.style.display = "block";
+    addPassenger.innerHTML+=`
+        
+      
+        <input type="text" placeholder="First Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="text" placeholder="Last Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+       
+    `;
 
- function ajoutepassager( n){
-    for(let i=1;i<n;i++){
-      addPassenger.innerHTML+=`
-        <input type="text" placeholder="First Name" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="text" placeholder="Last Name" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">     
+    if (selectG.checked && count>5) {
+      addpBtn.removeEventListener('click', ajoutepassager);
+       addpBtn.style.display = "none";
+    } 
+   
+  }
+ 
+ addpBtn.addEventListener('click',ajoutepassager);
+  
+   
+
+function checkSelection() {
+ 
+  if (selectS.checked) {
+    addpBtn.style.display = "none";
+    addPassenger.innerHTML="";
+  } 
+
+
+  else if (selectC.checked) {
+
+
+    const currentPrice=document.querySelectorAll('.price');
+     prices.forEach(price => {
+      let currentPrice = parseFloat(price.textContent);
+      price.textContent = currentPrice * 2;
+    });
+    addpBtn.style.display = "none";
+    addPassenger.innerHTML="";
+    for(let i=0;i<1;i++){
+
+         addPassenger.innerHTML+=`
+        
+        <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+       
     `;
     }
     
   }
 
- 
-function checkSelection() {
-  if (selectS.checked) {
- 
-    addpBtn.style.display = "none";
+   else if (selectG.checked) {
+    addpBtn.style.display = "block";
     addPassenger.innerHTML="";
-  } 
-  else if (selectC.checked) {
-    addpBtn.style.display = "block";
-  addpBtn.addEventListener('click',ajoutepassager(2));
-  } 
-   if (selectG.checked) {
-    addpBtn.style.display = "block";
-    addpBtn.addEventListener('click',ajoutepassager(5)0);
+  }
+   
+       
   } 
  
-}
+
 
 
 selectS.addEventListener('input', checkSelection);
@@ -406,17 +430,53 @@ centent.innerHTML = `
     }
 
     // Accommodation cards (This part was already correct)
+    
     const accommodations = dest.accommodations || ["standard", "luxury", "zero-g"];
+    const changedElements=document.getElementById('changedElements');
+    fetch('accommodations.json')
+    .then(response => response.json())
+    
     changedElements.innerHTML = `
-      <label class="block mb-2 text-sm text-white">Accommodation Type</label>
-      <div class="grid md:grid-cols-3 gap-4">
-        ${accommodations.map(acc => `
-          <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition">
-            <h4 class="font-semibold text-cyan-200 mb-1">${acc.charAt(0).toUpperCase() + acc.slice(1)} Cabin</h4>
-            <p class="text-sm text-gray-400">Comfortable private quarters with ${acc} amenities</p>
-          </div>
-        `).join('')}
-      </div>
+    <label class="block mb-2 text-sm text-white">Accommodation Type</label>
+          <div class="grid md:grid-cols-3 gap-4  ">
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative">
+              <h4 class="font-semibold  mb-1  text-blue-200">${accommodations[0]}</h4>
+              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
+              <br>
+              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+              <i class="fas fa-clock mr-1"></i>For 1 DAY
+            </span>
+
+            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">500 </span>
+            </span>
+            </div>
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative">
+              <h4 class="font-semibold text-cyan-200 mb-1">${accommodations[1]}</h4>
+              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
+               <br>
+              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+              <i class="fas fa-clock mr-1"></i>For 1 DAY
+            </span>
+
+            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">1200 </span>
+            </span>
+            </div>
+            <div class="p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition relative ">
+              <h4 class="font-semibold text-cyan-200 mb-1">${accommodations[2]}</h4>
+              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
+              <br>
+              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+              <i class="fas fa-clock mr-1"></i>For 1 DAY
+            </span>
+
+            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">2000 </span>
+            </span>
+            </div>
+            
+        </div>
     `;
   }
 
