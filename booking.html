@@ -204,70 +204,89 @@ const selectG = document.getElementById('selectG');
 
 const addPassenger=document.getElementById('addPassenger');
 
-
-var count=1;
- function ajoutepassager(){
-    count++;
-    addpBtn.style.display = "block";
-    addPassenger.innerHTML+=`
-        
-      
-        <input type="text" placeholder="First Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="text" placeholder="Last Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
-       
+let count = 2;
+function ajoutepassager() {
+  if (selectG.checked && count <= 6) {
+    addPassenger.innerHTML += `
+      <input type="text" placeholder="First Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+      <input type="text" placeholder="Last Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+      <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+      <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
     `;
+    count++;
 
-    if (selectG.checked && count>5) {
-      addpBtn.removeEventListener('click', ajoutepassager);
-       addpBtn.style.display = "none";
-    } 
-   
+    if (count >6) {
+      addpBtn.style.display = "none";
+    }
   }
- 
- addpBtn.addEventListener('click',ajoutepassager);
-  
-   
+}
 
+  
 function checkSelection() {
  
-  if (selectS.checked) {
-    addpBtn.style.display = "none";
-    addPassenger.innerHTML="";
-  } 
+        if (selectS.checked) {
+          addpBtn.style.display = "none";
+          addPassenger.innerHTML="";
+        } 
+
+       
+        if (selectG.checked) {
+          addpBtn.style.display = "block";
+          addpBtn.addEventListener("click", ajoutepassager);
+
+           addPassenger.innerHTML=``;
+          for(let i=0;i<2;i++){
+              count++;
+              addPassenger.innerHTML+=`
+                  
+                  <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+                  <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+                  <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+                  <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+                
+              `;
+
+          }
+              
+             
+        }
 
 
-  else if (selectC.checked) {
 
 
-    const currentPrice=document.querySelectorAll('.price');
-     prices.forEach(price => {
-      let currentPrice = parseFloat(price.textContent);
-      price.textContent = currentPrice * 2;
-    });
-    addpBtn.style.display = "none";
-    addPassenger.innerHTML="";
-    for(let i=0;i<1;i++){
 
-         addPassenger.innerHTML+=`
+
+
+
+
+
+
+
+
+        else if (selectC.checked) {
+          addpBtn.style.display = "none";
+          addPassenger.innerHTML=``;
+          
+          
+              count++;
+              addPassenger.innerHTML+=`
+              
+              <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+              <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+              <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
+              <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+            
+          `;
+             
+        }
+
+
+      // else if (selectG.checked) {
+      //   addpBtn.style.display = "block";
+      //   addPassenger.innerHTML=``;
         
-        <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-        <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
-       
-    `;
-    }
-    
-  }
-
-   else if (selectG.checked) {
-    addpBtn.style.display = "block";
-    addPassenger.innerHTML="";
-  }
-   
-       
+      // }
+            
   } 
  
 

@@ -146,21 +146,27 @@
     
 
     <script>
-   // get container
-const mainSection = document.getElementById('mainSection');
+   
+   fetch('destinations.json')
+  .then(response => response.json())  // convert JSON to JS object
+  .then(data => { 
 
-// fetch JSON file
-fetch('destinations.json')
-  .then(response => response.json())
-  .then(destinations => {
+": "1.31 m/s² (13% of Earth)",
 
-    // Clear existing content
+
+
+   function displayDistanation() {
+    const mainSection = document.getElementById('mainSection'); // container dyal cards
+
+    // Clear existing cards
     mainSection.innerHTML = '';
 
+    // Loop 3la array destinations
     destinations.forEach(dest => {
         const card = document.createElement('div');
         card.className = "planet-card p-8 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center";
 
+        // Choix de l'ordre selon le planet
         const orderClass = ['mars', 'titan'].includes(dest.id) ? 'lg:order-2' : '';
         const infoOrderClass = ['mars', 'titan'].includes(dest.id) ? 'lg:order-1' : '';
 
@@ -204,9 +210,11 @@ fetch('destinations.json')
 
         mainSection.appendChild(card);
     });
-  })
-  .catch(error => console.error('Error loading destinations JSON:', error));
-   
+   }
+       displayDistanation();
+
+
+  })     
 
     </script>
 </body>

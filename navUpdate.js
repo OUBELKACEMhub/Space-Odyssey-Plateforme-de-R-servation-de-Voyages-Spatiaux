@@ -1,4 +1,4 @@
-      
+
 const navBar = document.getElementById('dev');
 const  welcomeMessage=document.getElementById('welcome');
 function updateNavBar() {
