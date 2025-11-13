@@ -856,3 +856,25 @@ h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
 @media (prefers-color-scheme: light) {
   /* Light mode overrides if needed in future */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const craftBtn = document.querySelectorAll('.cruft');
+craftBtn.forEach(element => {
+  element.classList.remove('active');  
+  }); 
+craftBtn.addEventListener('click',()=>{
+     element.classList.add('active')
+});
