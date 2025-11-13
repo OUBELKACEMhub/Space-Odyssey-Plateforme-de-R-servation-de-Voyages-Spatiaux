@@ -81,6 +81,7 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(14, 165, 233, 0.3);
         border-radius: 15px;
+        color: white;
       }
 
     </style>
@@ -165,7 +166,7 @@
     <div class="flex flex-col gap-4">
       <button type="button" class="w-full mt-4 p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 text-white"    id="addpBtn">Add Passenger</button> 
       </div>
-      <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition" onclick="confirmetest()">Confirm Booking</button>
+      <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition" onclick="return confirmetest(event)">Confirm Booking</button>
     </div>
     <p class="text-center text-sm text-gray-400">
       By confirming, you agree to our <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and <a href="#" class="text-cyan-400 hover:underline">Space Travel Agreement</a>.
@@ -232,10 +233,10 @@ function ajoutepassager() {
     addPassenger.innerHTML += `
       <h3 class="text-white">passenger ${count}</h3>
             <br>
-      <input type="text" placeholder="First Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-      <input type="text" placeholder="Last Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-      <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-      <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+      <input type="text" placeholder="First Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400  firstName " >
+      <input type="text" placeholder="Last Name ${count}" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 lastName ">
+      <input type="email" placeholder="Email Address" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 Email">
+      <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400  Tel">  
       `;
     count++;
 
@@ -260,10 +261,10 @@ function checkSelection() {
             addPassenger.innerHTML += `
                 <h3 class="text-white">passenger ${count}</h3>
                 <br>
-                <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-                <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-                <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-                <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+                <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400  firstName">
+                <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 lastName">
+                <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 Email">
+                <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 Tel">  
             `;
             count++; 
         }
@@ -276,10 +277,10 @@ function checkSelection() {
         addPassenger.innerHTML += `
             <h3 class="text-white">passenger ${count}</h3>
             <br>
-            <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-            <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-            <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">
-            <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400">  
+            <input type="text" placeholder="First Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 firstName">
+            <input type="text" placeholder="Last Name " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400  lastName">
+            <input type="email" placeholder="Email Address " class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 Email">
+            <input type="tel" placeholder="Phone Number" class="p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 Tel">  
         `;
         count++; 
     }
@@ -559,6 +560,9 @@ function updateselect(dest) {
   }
 
 
+
+
+
 })
 
 
@@ -567,6 +571,81 @@ function updateselect(dest) {
     
     centent.innerHTML = `<p class="text-red-400">Error: Couldn't load destination data. ${error.message}</p>`;
 });
+
+
+
+function confirmetest(event) {
+    
+    if (event) {
+        event.preventDefault(); 
+    }
+    
+  
+
+    let isValid = true; 
+    const formB = document.getElementById('formB'); 
+
+  
+    const errorBorder = 'border-red-500'; 
+    const defaultBorder = 'border-cyan-300'; 
+    const errorRing = 'ring-red-500';
+    const defaultRing = 'ring-cyan-400';
+
+
+    const personalInfoContainer = document.getElementById('PersonalInformation '); 
+    if (!personalInfoContainer) {
+        console.error("shoold input information of passangers!!! '");
+        return false; 
+    }
+
+   
+    const allInputs = personalInfoContainer.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+
+    
+    allInputs.forEach(input => {
+        
+        input.classList.remove(errorBorder, errorRing);
+        input.classList.add(defaultBorder, defaultRing); 
+        
+        const value = input.value.trim(); 
+        let inputValid = true;
+
+       
+        if (value === '') {
+            inputValid = false;
+        }
+
+        if (input.type === 'email' && value !== '') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                inputValid = false;
+            }
+        }
+        
+      
+        if (!inputValid) {
+            isValid = false;
+            input.classList.add(errorBorder, errorRing); 
+            input.classList.remove(defaultBorder, defaultRing); 
+        }
+    });
+
+    if (isValid) {
+        
+        alert('Booking Confirmed! All passenger details are valid.');
+         
+    } else {
+        // Kayn ghalat
+        alert('Please check the fields marked in red. All passenger details are required and must be valid.');
+        const firstError = formB.querySelector('.' + errorBorder);
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    
+    return false; 
+}
   
 </script>
 </html>
