@@ -3,9 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Booking - SpaceVoyager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <script>
+        // Nfs l-config dyal Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'space-dark': '#0a0a18',
+                        'space-blue': '#1a1a2e',
+                        'space-purple': '#16213e',
+                        'neon-blue': '#0ea5e9',
+                        'neon-purple': '#8b5cf6',
+                        'neon-cyan': '#06b6d4',
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'exo': ['Exo 2', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Nfs l-background dyal l-page l-okhra */
+        body {
+            background: linear-gradient(to bottom, #0a0a18, #1a1a2e, #16213e);
+            background-attachment: fixed;
+            color: white;
+            padding: 2rem;
+        }
+        
+        /* Style dyal Ticket Container (bach yban byed) */
+        #ticket-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            color: #1f2937; /* L-ketba k7la */
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+            padding: 2rem;
+        }
+
+        /* Nfs l-style dyal l-ticket li kan 3ndk f l-modal */
+        #ticket-container h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #16213e; /* space-purple */
+            border-bottom: 2px solid #0ea5e9; /* neon-blue */
+            padding-bottom: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        #ticket-container p {
+            margin-bottom: 0.5rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.1rem;
+        }
+        #ticket-container .passenger-item {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        #ticket-container .price-summary {
+            background: #f9f9f9;
+            border: 1px dashed #0ea5e9;
+            padding: 1rem;
+        }
+
+         /* L-IMPRIMATION  */
+        @media print {
+            body {
+                background: none !important;
+                color: #000 !important;
+                padding: 0;
+            }
+            body > *:not(#ticket-container) {
+                display: none !important;
+            }
+            #ticket-container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                color: #000 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
-    
+
+    <div class="text-center no-print">
+        <h2 class="font-orbitron font-bold md:text-3xl text-white">My Booking Confirmation</h2>
+        <p class="text-gray-300 mt-3">Here are the details for your upcoming space journey.</p>
+        <a href="index.html" class="text-cyan-400 hover:underline mt-4 inline-block no-print">&larr; Back to Home</a>
+    </div>
+
+    <div id="ticket-container">
+        <p class="text-center text-lg">Loading booking details...</p>
+    </div>
+
+    <div class="text-center mt-6 no-print">
+        <button id="printTicketBtn" 
+                class="bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold py-3 px-8 rounded-md hover:opacity-90 transition">
+            <i class="fas fa-print mr-2"></i> Print Ticket
+        </button>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const bookingDataJSON = localStorage.getItem('latestBooking');
+            const container = document.getElementById('ticket-container');
+
+            if (!bookingDataJSON) {
+                container.innerHTML = `
+                    <h3 style="color: red;">No Booking Found</h3>
+                    <p>We couldn't find any booking details. Please return to the booking page and complete your reservation.</p>
+                    <a href="booking.html" class="text-cyan-500 hover:underline">&larr; Go to Booking Page</a>
+                `;
+                return;
+            }
+
+            const data = JSON.parse(bookingDataJSON);
+
+            let passengersHTML = '';
+            data.passengers.forEach((p, index) => {
+                passengersHTML += `
+                    <div class="passenger-item">
+                        <strong class="text-lg">Passenger ${index + 1}:</strong>
+                        <p><strong>Name:</strong> ${p.name}</p>
+                        <p><strong>Email:</strong> ${p.email}</p>
+                        <p><strong>Phone:</strong> ${p.phone}</p>
+                    </div>`;
+            });
+
+            container.innerHTML = `
+                <div class="text-center mb-6">
+                    <i class="fas fa-rocket text-5xl text-cyan-500"></i>
+                    <h1 class="text-4xl font-orbitron text-space-dark mt-2">MISSION CONFIRMED</h1>
+                    <p class="text-lg text-gray-600">Booking ID: ${new Date(data.bookedAt).getTime()}</p>
+                </div>
+
+                <h3><i class="fas fa-map-marker-alt mr-2"></i>Journey Details</h3>
+                <p><strong>Destination:</strong> ${data.journey.destination}</p>
+                <p><strong>Departure Date:</strong> ${data.journey.departureDate}</p>
+                <p><strong>Accommodation:</strong> ${data.journey.accommodation}</p>
+                <p><strong>Journey Duration:</strong> ${data.journey.duration} Days</p>
+
+                <h3><i class="fas fa-users mr-2"></i>Passenger Manifest</h3>
+                ${passengersHTML}
+
+                <h3><i class="fas fa-dollar-sign mr-2"></i>Price Summary</h3>
+                <div class="price-summary">
+                    <p><strong>Number of Passengers:</strong> ${data.price.numPassengers}</p>
+                    <p><strong>Base Mission Price:</strong> $${data.price.missionPrice.toLocaleString()}</p>
+                    <p><strong>Accommodation Price:</strong> $${data.price.accommodationPrice.toLocaleString()}</p>
+                    <hr class="border-gray-300 my-2">
+                    <p class="text-2xl font-bold"><strong>Total Price: $${data.price.totalPrice.toLocaleString()}</strong></p>
+                </div>
+            `;
+
+            document.getElementById('printTicketBtn').addEventListener('click', () => {
+                window.print();
+            });
+
+          
+        });
+    </script>
 </body>
 </html>

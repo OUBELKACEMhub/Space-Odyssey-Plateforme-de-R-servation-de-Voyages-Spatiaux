@@ -9,7 +9,6 @@ function updateNavBar() {
 
 
   if (savedUser && savedUser.isLoggedIn) {
-
     navBar.innerHTML = `
       <div class="container mx-auto px-4 py-3 flex w-full justify-between items-center gap-0">
         <div class="flex items-center space-x-3">
@@ -23,8 +22,10 @@ function updateNavBar() {
           <a href="index.html" class="hover:text-neon-blue transition-colors">Home</a>
           <a href="destinations.html" class="hover:text-neon-blue transition-colors">Destinations</a>
           <a href="booking.html" class="hover:text-neon-blue transition-colors">Booking</a>
+          <a href=" MyBooking.html" class="hover:text-neon-blue transition-colors">MYBooking</a>
           <a href="about.html" class="hover:text-neon-blue transition-colors">About</a>
           <button id="logoutBtn" class="border border-neon-blue px-3 py-1 rounded hover:bg-neon-blue hover:text-black transition">Logout</button>
+          <img src="images/WhatsApp Image 2025-11-13 at 22.38.17_0159cba0.jpg" alt="" id="profile"  style=" width: 40px;height: 40px;border: 2px; border-radius: 50%; z-index: 10000;">
         </div>
 
         <div class="md:hidden">
@@ -65,8 +66,7 @@ function updateNavBar() {
     `;
   }
 
-  
-  const logoutBtn = document.getElementById('logoutBtn');
+   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('userSession');
@@ -74,6 +74,7 @@ function updateNavBar() {
     });
   }
 }
+ 
 
 
 updateNavBar();

@@ -84,6 +84,85 @@
         color: white;
       }
 
+
+      .modal-overlay {
+        transition: opacity 0.3s ease;
+    }
+    .modal-container {
+        transition: all 0.3s ease;
+    }
+    .hidden {
+        display: none;
+    }
+
+    /* Style dyal l-ticket l-dakhli (optional) */
+    #ticketContent h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        color: #16213e; /* space-purple */
+        border-bottom: 2px solid #0ea5e9; /* neon-blue */
+        padding-bottom: 8px;
+        margin-top: 16px;
+        margin-bottom: 12px;
+    }
+     #ticketContent p {
+        margin-bottom: 4px;
+        font-family: 'Exo 2', sans-serif;
+        font-size: 1.1rem;
+    }
+    #ticketContent .passenger-item {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 8px;
+    }
+
+
+ /* STYLE DYAL L-IMPRIMATION */
+    @media print {
+        body > *:not(#ticketModal) {
+            display: none !important;
+        }
+
+        #ticketModal {
+            display: block !important;
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            transform: none !important;
+            z-index: 9999 !important;
+        }
+
+        .modal-overlay {
+            display: none !important;
+        }
+        .modal-container {
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            transform: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            background: #fff !important;
+            color: #000 !important;
+            max-height: none !important;
+            overflow-y: visible !important;
+        }
+
+        .no-print {
+            display: none !important;
+        }
+
+        #ticketContent {
+            color: #000 !important;
+        }
+         #ticketContent h3 {
+            color: #000 !important;
+            border-color: #aaa !important;
+        }
+    }
     </style>
 </head>
 
@@ -166,7 +245,7 @@
     <div class="flex flex-col gap-4">
       <button type="button" class="w-full mt-4 p-3 bg-transparent border border-cyan-300 rounded-md focus:ring-2 focus:ring-cyan-400 text-white"    id="addpBtn">Add Passenger</button> 
       </div>
-      <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition" onclick="return confirmetest(event)">Confirm Booking</button>
+      <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition" onclick="return confirmetest(event)"  id="booking">Confirm Booking</button>
     </div>
     <p class="text-center text-sm text-gray-400">
       By confirming, you agree to our <a href="#" class="text-cyan-400 hover:underline">Terms of Service</a> and <a href="#" class="text-cyan-400 hover:underline">Space Travel Agreement</a>.
@@ -210,12 +289,35 @@
         </div>
     </footer>
 
+<div id="ticketModal" class="hidden">
+    <div class="modal-overlay fixed inset-0 bg-black bg-opacity-75 z-50"></div>
+
+    <div class="modal-container fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                bg-white text-gray-800 p-8 rounded-lg shadow-xl z-50
+                w-11/12 md:w-3/4 lg:w-1/2" 
+         style="max-height: 90vh; overflow-y: auto;">
+        
+        <div class="flex justify-between items-center pb-3 no-print">
+            <h2 class="text-2xl font-bold font-orbitron text-space-dark">Booking Confirmation</h2>
+            <button id="closeModalBtn" class="text-gray-600 hover:text-gray-900 text-2xl">&times;</button>
+        </div>
+
+        <div id="ticketContent" class="border-t border-b border-gray-300 py-6">
+            </div>
+
+        <div class="flex justify-end pt-4 no-print">
+            <button id="printTicketBtn" 
+                    class="bg-cyan-500 text-white font-bold py-2 px-6 rounded-lg 
+                           hover:bg-cyan-600 transition-colors">
+                <i class="fas fa-print mr-2"></i> Print Ticket
+            </button>
+        </div>
+    </div>
+</div>
 </body>
 <script src="navUpdate.js"></script>
-
 <script>
 
-// Global variables
 const select = document.getElementById('dest');
 const centent = document.getElementById('centent');
 const changedElements = document.getElementById('changedElements');
@@ -226,7 +328,9 @@ const selectG = document.getElementById('selectG');
 const addPassenger = document.getElementById('addPassenger');
 const ticket = document.getElementById('ticket'); 
 
-let count = 2; 
+let currentBookingDetails = {}; 
+let count = 2;
+
 
 function ajoutepassager() {
   if (selectG.checked && count <= 6) {
@@ -290,6 +394,7 @@ function checkSelection() {
     craftBtn.forEach(el => el.classList.remove('active'));
 }
 
+//event of passangers
 addpBtn.addEventListener("click", ajoutepassager);
 selectS.addEventListener('input', checkSelection);
 selectC.addEventListener('input', checkSelection);
@@ -297,14 +402,13 @@ selectG.addEventListener('input', checkSelection);
 window.addEventListener('load', checkSelection);
 
 
-
+// Fetch dyal Destinations
 fetch('destinations.json') 
   .then(response => {
-      
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}. Ma lqitch file 'destinations.json'`);
-      }
-      return response.json();
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}. Ma lqitch file 'destinations.json'`);
+    }
+    return response.json();
   })
   .then(destinations => {
 
@@ -313,7 +417,7 @@ fetch('destinations.json')
       "id": "odyssey",
       "name": "SV Odyssey",
       "class": "Interplanetary",
-      "description": "Our flagship interplanetary spacecraft designed for long-duration missions to Mars and beyond.eatures advanced life support and artificial gravity.",
+      "description": "Our flagship interplanetary spacecraft...",
       "image": "https://static.scientificamerican.com/dam/m/7440c4ab31c0f704/webimage-saw0524Scol-Spaceplane.png?m=1715807725.594&w=1200",
       "usedFor": ["mars", "europa", "titan", "venus-clouds"]
       },
@@ -321,7 +425,7 @@ fetch('destinations.json')
       "id": "lunar-express",
       "name": "Lunar Express",
       "class": "Lunar Shuttle",
-      "description": "High-frequency shuttle service between Earth and Moon. Quick, comfortable, and reliable for lunar tourism.",
+      "description": "High-frequency shuttle service...",
      "image": "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2017/07/moon-express-2.jpg?resize=1200,675&key=3e2d8d5a&watermark",
       "usedFor": ["moon"]
       },
@@ -329,300 +433,263 @@ fetch('destinations.json')
       "id": "orbital-one",
       "name": "Orbital One",
       "class": "Space Station",
-      "description": "Luxury orbital habitat serving as both destination and transfer station for interplanetary journeys.",
+      "description": "Luxury orbital habitat...",
      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Venturestar1.jpg/330px-Venturestar1.jpg",
       "usedFor": ["orbital-station"]
       }
     ];
   
-
-function displayForme(option) {
-    const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
-    if (!dest) {
-        centent.innerHTML = "";
-        MissionDetail.innerHTML = "";
-        changedElements.innerHTML = "";
-        ticket.innerHTML = "";
-        return;
-    }
-    
-centent.innerHTML = `
-  <div id="imagebooking" class="border border-cyan-300 rounded-md overflow-hidden relative">
-    <img src="${dest.image}" alt="imageBooking" class="w-full h-30 object-cover rounded" id="imgdest">
-    <span class="absolute px-3 text-sm text-gray-400 bottom-5 left-2 flex items-center      text-yellow-400">
-      <i class="fas fa-clock mr-1"></i>${dest.travelDuration} Days
-    </span>
-    <span class="absolute px-3 text-m text-gray-400 bottom-5 right-2 flex items-center  text-yellow-400">
-      <i class="fas fa-dollar-sign mr-1"></i> From $ ${dest.price} 
-    </span>
-  </div>
-  <br>
-  <h3 class="text-white text-sm mb-1">Our Crafts</h3>
-  <div class="border border-cyan-300 flex justify-center gap-3 p-5 rounded-md focus:outline-none focus:ring-2">
-    <img src="" alt="craft" class="flex-1 w-full h-60 object-cover rounded" id="imgcraft">
-    <div class="text-white text-[14px] rounded-md border border-cyan-100 p-3" style="display: block;">
-      <p class="text-gray-400 text-sm" id="namecraft"></p>
+    function displayForme(option) {
+        const dest = destinations.find(d => d.name.toLowerCase() === option.toLowerCase());
+        if (!dest) {
+            centent.innerHTML = "";
+            MissionDetail.innerHTML = "";
+            changedElements.innerHTML = "";
+            ticket.innerHTML = "";
+            return;
+        }
+        
+    centent.innerHTML = `
+      <div id="imagebooking" class="border border-cyan-300 rounded-md overflow-hidden relative">
+        <img src="${dest.image}" alt="imageBooking" class="w-full h-30 object-cover rounded" id="imgdest">
+        <span class="absolute px-3 text-sm text-gray-400 bottom-5 left-2 flex items-center       text-yellow-400">
+          <i class="fas fa-clock mr-1"></i>${dest.travelDuration} Days
+        </span>
+        <span class="absolute px-3 text-m text-gray-400 bottom-5 right-2 flex items-center  text-yellow-400">
+          <i class="fas fa-dollar-sign mr-1"></i> From $ ${dest.price} 
+        </span>
+      </div>
       <br>
-      <div class="decr flex-1 text-white text-[18px]" id="desccraft"></div>
-      <br>
-      <button class="flex justify-center items-center bg-sky-900 w-20 h-10 border border-cyan-300 text-gray-400 text-sm"">Learn More</button>
-    </div>
-  </div>
-`;
-
-const MissionDetail=document.getElementById('MissionDetail');
-  MissionDetail.innerHTML="";
-  MissionDetail.innerHTML=`
-   <h3 class="font-orbitron  text-xl font-semibold text-cyan-300 mb-4 text-white">Mission Information</h3>
-         <div class="w-full py-5 border border-cyan-400 text-cyan-300 rounded-md hover:bg-cyan-800/20 transition text-white p-4  text-sm   flex" >
-           <div class="flex:1"> 
-         <span class="text-s p-3 text-cyan-200 ">Mission Name</span> :  ${dest.name}
-             <br>
-           <span class="text-s p-3 text-cyan-200 ">shortDescription</span>: ${dest.shortDescription}
-             <br>
-           <span class="text-s p-3 pl-3 text-cyan-200 ">price</span> :$ ${dest.price} USD 
-             <br>
-           <span class="text-s p-3 text-cyan-200 ">travelDuration</span>:  ${dest.travelDuration} Days
-             <br>
-           <span class="text-s p-3 text-cyan-200 ">distance</span>:  ${dest.distance}
-           <br>
-           <span class="text-s p-3 text-cyan-200 ">gravity</span>:  ${dest.gravity}
-           <br>
-        <span class="text-s p-3 text-cyan-200 ">temperature</span>:  ${dest.temperature}
-        <br>
-       <span class="text-s p-3 text-cyan-200 ">atmosphere</span>: ${dest.atmosphere}
-       <br>
-       <span class="text-s p-3 text-cyan-200 ">diameter</span>: ${dest.diameter}
-       <br>
-       </div>
-     </div>
-  `;
-    
-    // Had logic dyal crafts baqi mzyan
-    const imgdest = document.getElementById('imgdest'); 
-    const imgcraft = document.getElementById('imgcraft');
-    const namecraft = document.getElementById('namecraft');
-    const desccraft = document.getElementById('desccraft');
-    
-    if (
-      dest.id.toLowerCase() === "mars" ||
-      dest.id.toLowerCase() === "europa" ||
-      dest.id.toLowerCase() === "titan" ||
-      dest.id.toLowerCase() === "venus-clouds"
-    ) {
-      const craft = crafts.find(c => c.id === 'odyssey');
-      imgcraft.src = craft.image;
-      namecraft.textContent = craft.name;
-      desccraft.textContent = craft.description;
-    } else if (dest.id.toLowerCase() === "moon") {
-      const craft = crafts.find(c => c.id === 'lunar-express');
-      imgcraft.src = craft.image;
-      namecraft.textContent = craft.name;
-      desccraft.textContent = craft.description;
-    } else if (dest.id.toLowerCase() === "orbital-station") {
-      const craft = crafts.find(c => c.id === 'orbital-one');
-      imgcraft.src = craft.image;
-      namecraft.textContent = craft.name;
-      desccraft.textContent = craft.description;
-    }
-
-    
-    // 1. NsN3o templates dyal kol card
-    const accommodationTemplates = {
-        "standard": `
-            <div class=" standard p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative cruft">
-              <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
-              <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
-              <br>
-              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
-              <i class="fas fa-clock mr-1"></i>For 1 DAY
-            </span>
-            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
-              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">500 </span>
-            </span>
-            </div>`,
-        "luxury": `
-            <div class="Luxury p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative cruft">
-              <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
-              <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
-                <br>
-              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
-              <i class="fas fa-clock mr-1"></i>For 1 DAY
-            </span>
-            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
-              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">1200 </span>
-            </span>
-            </div>`,
-        "zero-g": `
-            <div class="Zero p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition relative cruft">
-              <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
-              <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
-              <br>
-              <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
-              <i class="fas fa-clock mr-1"></i>For 1 DAY
-            </span>
-            <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
-              <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">2000 </span>
-            </span>
-            </div>`
-    };
-
-    // 2. Nbniw l-HTML 3la 7sab l-JSON
-    let accommodationHTML = `<label class="block mb-2 text-sm text-white">Accommodation Type</label>
-                            <div class="grid md:grid-cols-3 gap-4">`;
-    
-    if (dest.accommodations && dest.accommodations.length > 0) {
-        dest.accommodations.forEach(type => {
-            if (accommodationTemplates[type]) {
-                accommodationHTML += accommodationTemplates[type];
-            }
-        });
-    } else {
-        accommodationHTML += `<p class="text-gray-400">No accommodations listed for this destination.</p>`;
-    }
-    
-    accommodationHTML += `</div>`;
-    
-
-    changedElements.innerHTML = accommodationHTML;
-   
-    updateselect(dest); 
-} 
-
-
-function updateselect(dest) { 
-  if (!dest) return; 
-
-  const craftBtn = document.querySelectorAll('.cruft');
-
-
-  let durationInDays = dest.travelDuration; 
-
-  craftBtn.forEach(element => {
-    element.addEventListener('click', () => {
-      
-      craftBtn.forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
-      
-      let accommodationPrice = 0;
-      let accommodationName = "N/A";
-
-      if (element.classList.contains('standard')) {
-          accommodationPrice = 500;
-          accommodationName = "Standard";
-      } else if (element.classList.contains('Luxury')) {
-          accommodationPrice = 1200;
-          accommodationName = "Luxury";
-      } else if (element.classList.contains('Zero')) {
-          accommodationPrice = 2000;
-          accommodationName = "Zero-G";
-      }
-
-  
-      let numPassengers = 1;
-      if (selectC.checked) { 
-          numPassengers = 2;
-      } else if (selectG.checked) { 
-          const passengerForms = addPassenger.querySelectorAll('h3'); 
-          numPassengers = 1 + passengerForms.length; 
-      }
-      
-      
-      const totalMissionPrice = dest.price ;
-      const totalAccommodationPrice = accommodationPrice * durationInDays * numPassengers;
-      const totalPrice = totalMissionPrice + totalAccommodationPrice;
-
-      ticket.innerHTML = `
-       <div class="ements p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 ">
-            <h4 class="font-orbitron text-lg text-cyan-200 mb-2">Price Summary</h4>
-            <p class="text-white mt-1">Price Mission (x${numPassengers}): $${totalMissionPrice.toLocaleString()}</p>
-            <p class="text-white mt-1">Nombre of Passengers  :${numPassengers} </p>
-            <p class="text-white mt-1">duration In Days  :${durationInDays} $</p>
-            <p class="text-white mt-1">price Accommodation (${accommodationName} x${numPassengers} pax, ${durationInDays} days): $${totalAccommodationPrice.toLocaleString()}</p>
-            <hr class="border-cyan-700 my-2">
-            <p class="text-white mt-2 text-xl font-bold">Total Price: $${totalPrice.toLocaleString()}</p>
+      <h3 class="text-white text-sm mb-1">Our Crafts</h3>
+      <div class="border border-cyan-300 flex justify-center gap-3 p-5 rounded-md focus:outline-none focus:ring-2">
+        <img src="" alt="craft" class="flex-1 w-full h-60 object-cover rounded" id="imgcraft">
+        <div class="text-white text-[14px] rounded-md border border-cyan-100 p-3" style="display: block;">
+          <p class="text-gray-400 text-sm" id="namecraft"></p>
+          <br>
+          <div class="decr flex-1 text-white text-[18px]" id="desccraft"></div>
+          <br>
+          <button class="flex justify-center items-center bg-sky-900 w-20 h-10 border border-cyan-300 text-gray-400 text-sm"">Learn More</button>
         </div>
+      </div>
+    `;
+
+    const MissionDetail=document.getElementById('MissionDetail');
+      MissionDetail.innerHTML="";
+      MissionDetail.innerHTML=`
+       <h3 class="font-orbitron  text-xl font-semibold text-cyan-300 mb-4 text-white">Mission Information</h3>
+             <div class="w-full py-5 border border-cyan-400 text-cyan-300 rounded-md hover:bg-cyan-800/20 transition text-white p-4  text-sm   flex" >
+               <div class="flex:1"> 
+             <span class="text-s p-3 text-cyan-200 ">Mission Name</span> :  ${dest.name}
+                 <br>
+               <span class="text-s p-3 text-cyan-200 ">shortDescription</span>: ${dest.shortDescription}
+                 <br>
+               <span class="text-s p-3 pl-3 text-cyan-200 ">price</span> :$ ${dest.price} USD 
+                 <br>
+               <span class="text-s p-3 text-cyan-200 ">travelDuration</span>:  ${dest.travelDuration} Days
+                 <br>
+               <span class="text-s p-3 text-cyan-200 ">distance</span>:  ${dest.distance}
+               <br>
+               <span class="text-s p-3 text-cyan-200 ">gravity</span>:  ${dest.gravity}
+               <br>
+             <span class="text-s p-3 text-cyan-200 ">temperature</span>:  ${dest.temperature}
+             <br>
+            <span class="text-s p-3 text-cyan-200 ">atmosphere</span>: ${dest.atmosphere}
+            <br>
+            <span class="text-s p-3 text-cyan-200 ">diameter</span>: ${dest.diameter}
+            <br>
+            </div>
+          </div>
       `;
+        
+        const imgdest = document.getElementById('imgdest'); 
+        const imgcraft = document.getElementById('imgcraft');
+        const namecraft = document.getElementById('namecraft');
+        const desccraft = document.getElementById('desccraft');
+        
+        if (dest.id.toLowerCase() === "mars" || dest.id.toLowerCase() === "europa" || dest.id.toLowerCase() === "titan" || dest.id.toLowerCase() === "venus-clouds") {
+            const craft = crafts.find(c => c.id === 'odyssey');
+            imgcraft.src = craft.image;
+            namecraft.textContent = craft.name;
+            desccraft.textContent = craft.description;
+        } else if (dest.id.toLowerCase() === "moon") {
+            const craft = crafts.find(c => c.id === 'lunar-express');
+            imgcraft.src = craft.image;
+            namecraft.textContent = craft.name;
+            desccraft.textContent = craft.description;
+        } else if (dest.id.toLowerCase() === "orbital-station") {
+            const craft = crafts.find(c => c.id === 'orbital-one');
+            imgcraft.src = craft.image;
+            namecraft.textContent = craft.name;
+            desccraft.textContent = craft.description;
+        }
 
+        const accommodationTemplates = {
+            "standard": `
+                <div class=" standard p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative cruft">
+                  <h4 class="font-semibold  mb-1  text-blue-200">Standard Cabin</h4>
+                  <p class="text-sm text-gray-400">Comfortable private quarters with basic amenities</p>
+                  <br>
+                  <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+                  <i class="fas fa-clock mr-1"></i>For 1 DAY
+                </span>
+                <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+                  <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">500 </span>
+                </span>
+                </div>`,
+            "luxury": `
+                <div class="Luxury p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition  relative cruft">
+                  <h4 class="font-semibold text-cyan-200 mb-1">Luxury Suite</h4>
+                  <p class="text-sm text-gray-400">Spacious suite with premium amenities and viewports</p>
+                    <br>
+                  <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+                  <i class="fas fa-clock mr-1"></i>For 1 DAY
+                </span>
+                <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+                  <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">1200 </span>
+                </span>
+                </div>`,
+            "zero-g": `
+                <div class="Zero p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 cursor-pointer transition relative cruft">
+                  <h4 class="font-semibold text-cyan-200 mb-1">Zero-G Pod</h4>
+                  <p class="text-sm text-gray-400">Advanced accommodation with zero-gravity experience</p>
+                  <br>
+                  <span class="absolute px-3 text-xs text-gray-400 bottom-2 left-2 flex items-center   text-yellow-400 Z-64444">
+                  <i class="fas fa-clock mr-1"></i>For 1 DAY
+                </span>
+                <span class="absolute px-3 text-xs text-gray-400 bottom-2 right-2 flex items-center text-yellow-400">
+                  <i class="fas fa-dollar-sign mr-1"></i> From $ <span class="price">2000 </span>
+                </span>
+                </div>`
+        };
+
+        let accommodationHTML = `<label class="block mb-2 text-sm text-white">Accommodation Type</label>
+                                 <div class="grid md:grid-cols-3 gap-4">`;
+        
+        if (dest.accommodations && dest.accommodations.length > 0) {
+            dest.accommodations.forEach(type => {
+                if (accommodationTemplates[type]) {
+                    accommodationHTML += accommodationTemplates[type];
+                }
+            });
+        } else {
+            accommodationHTML += `<p class="text-gray-400">No accommodations listed for this destination.</p>`;
+        }
+        
+        accommodationHTML += `</div>`;
+        changedElements.innerHTML = accommodationHTML;
+        
+        updateselect(dest); 
+    } 
+
+    function updateselect(dest) { 
+        if (!dest) return; 
+        const craftBtn = document.querySelectorAll('.cruft');
+        let durationInDays = dest.travelDuration; 
+
+        craftBtn.forEach(element => {
+            element.addEventListener('click', () => {
+                craftBtn.forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+                
+                let accommodationPrice = 0;
+                let accommodationName = "N/A";
+
+                if (element.classList.contains('standard')) {
+                    accommodationPrice = 500;
+                    accommodationName = "Standard";
+                } else if (element.classList.contains('Luxury')) {
+                    accommodationPrice = 1200;
+                    accommodationName = "Luxury";
+                } else if (element.classList.contains('Zero')) {
+                    accommodationPrice = 2000;
+                    accommodationName = "Zero-G";
+                }
+        
+                let numPassengers = 1;
+                if (selectC.checked) { 
+                    numPassengers = 2;
+                } else if (selectG.checked) { 
+                    const passengerForms = addPassenger.querySelectorAll('h3'); 
+                    numPassengers = 1 + passengerForms.length; 
+                }
+                
+                const totalMissionPrice = dest.price ;
+                const totalAccommodationPrice = accommodationPrice * durationInDays * numPassengers;
+                const totalPrice = totalMissionPrice + totalAccommodationPrice;
+
+                currentBookingDetails = {
+                    missionPrice: totalMissionPrice,
+                    accommodationPrice: totalAccommodationPrice,
+                    totalPrice: totalPrice,
+                    numPassengers: numPassengers,
+                    durationInDays: durationInDays,
+                    accommodationName: accommodationName,
+                    destinationName: dest.name 
+                };
+                
+                ticket.innerHTML = `
+                   <div class="ements p-4 border border-cyan-300 rounded-lg hover:bg-cyan-900/20 ">
+                     <h4 class="font-orbitron text-lg text-cyan-200 mb-2">Price Summary</h4>
+                     <p class="text-white mt-1">Price Mission (x${numPassengers}): $${totalMissionPrice.toLocaleString()}</p>
+                     <p class="text-white mt-1">Nombre of Passengers  :${numPassengers} </p>
+                     <p class="text-white mt-1">duration In Days  :${durationInDays} $</p>
+                     <p class="text-white mt-1">price Accommodation (${accommodationName} x${numPassengers} pax, ${durationInDays} days): $${totalAccommodationPrice.toLocaleString()}</p>
+                     <hr class="border-cyan-700 my-2">
+                     <p class="text-white mt-2 text-xl font-bold">Total Price: $${totalPrice.toLocaleString()}</p>
+                   </div>
+                `;
+            });
+        });
+    } 
+
+    select.addEventListener('change', () => {
+        ticket.innerHTML = "";
+        displayForme(select.value);
     });
-  });
-} 
+    
+    if (select.value && select.value !== "Select your destination") {
+        displayForme(select.value);
+    }
 
-  // Change event
-  select.addEventListener('change', () => {
-      ticket.innerHTML = "";
-      displayForme(select.value);
+  .catch(error => {
+    console.error('Error loading destinations JSON:', error);
+    centent.innerHTML = `<p class="text-red-400">Error: Couldn't load destination data. ${error.message}</p>`;
   });
   
- 
-  if (select.value && select.value !== "Select your destination") {
-    displayForme(select.value);
-  }
-
-
-
-
-
-})
-
-
-.catch(error => {
-    console.error('Error loading destinations JSON:', error);
-    
-    centent.innerHTML = `<p class="text-red-400">Error: Couldn't load destination data. ${error.message}</p>`;
-});
-
-
-
 function confirmetest(event) {
-    
     if (event) {
         event.preventDefault(); 
     }
     
-  
+    const savedUser = JSON.parse(localStorage.getItem('userSession'));
+    if (!savedUser || !savedUser.isLoggedIn){
+        alert("You must be logged in to book a journey.");
+        window.location.href = 'login.html';
+        return false;
+    }
 
+    // 2. Validation dyal l-form
     let isValid = true; 
     const formB = document.getElementById('formB'); 
-
-  
-    const errorBorder = 'border-red-500'; 
-    const defaultBorder = 'border-cyan-300'; 
-    const errorRing = 'ring-red-500';
-    const defaultRing = 'ring-cyan-400';
-
-
+    const errorBorder = 'border-red-500', defaultBorder = 'border-cyan-300';
+    const errorRing = 'ring-red-500', defaultRing = 'ring-cyan-400';
     const personalInfoContainer = document.getElementById('PersonalInformation '); 
+
     if (!personalInfoContainer) {
         console.error("shoold input information of passangers!!! '");
         return false; 
     }
-
-   
     const allInputs = personalInfoContainer.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
 
-    
     allInputs.forEach(input => {
-        
         input.classList.remove(errorBorder, errorRing);
         input.classList.add(defaultBorder, defaultRing); 
-        
         const value = input.value.trim(); 
         let inputValid = true;
-
-       
-        if (value === '') {
-            inputValid = false;
-        }
-
+        if (value === '') inputValid = false;
         if (input.type === 'email' && value !== '') {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(value)) {
-                inputValid = false;
-            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) inputValid = false;
         }
-        
-      
         if (!inputValid) {
             isValid = false;
             input.classList.add(errorBorder, errorRing); 
@@ -632,10 +699,52 @@ function confirmetest(event) {
 
     if (isValid) {
         
-        alert('Booking Confirmed! All passenger details are valid.');
-         
+        const passengers = [];
+        const p1_inputs = personalInfoContainer.querySelector('.grid').querySelectorAll('input');
+        passengers.push({
+            name: `${p1_inputs[0].value} ${p1_inputs[1].value}`,
+            email: p1_inputs[2].value,
+            phone: p1_inputs[3].value
+        });
+
+        const otherPassengerForms = document.getElementById('addPassenger').querySelectorAll('h3');
+        otherPassengerForms.forEach((h3) => {
+             const p_firstName = h3.nextElementSibling.nextElementSibling;
+             const p_lastName = p_firstName.nextElementSibling;
+             const p_email = p_lastName.nextElementSibling;
+             const p_tel = p_email.nextElementSibling;
+             if (p_firstName && p_lastName && p_email && p_tel) {
+                passengers.push({
+                    name: `${p_firstName.value} ${p_lastName.value}`,
+                    email: p_email.value,
+                    phone: p_tel.value
+                });
+             }
+        });
+
+        const departureDateInput = document.querySelector('input[type="date"]');
+        const journeyDetails = {
+            destination: currentBookingDetails.destinationName || document.getElementById('dest').value,
+            departureDate: departureDateInput.value ? departureDateInput.value : 'Not specified',
+            accommodation: currentBookingDetails.accommodationName || "Not selected",
+            duration: currentBookingDetails.durationInDays || 0
+        };
+
+        const bookingData = {
+            passengers: passengers,
+            journey: journeyDetails,
+            price: currentBookingDetails,
+            bookedAt: new Date().toISOString()
+        };
+
+        // D. save at ocalStorage
+        localStorage.setItem('latestBooking', JSON.stringify(bookingData));
+
+        
+        alert('Booking Confirmed! Redirecting to your ticket...');
+        window.location.href = 'MyBooking.html'; 
+        
     } else {
-        // Kayn ghalat
         alert('Please check the fields marked in red. All passenger details are required and must be valid.');
         const firstError = formB.querySelector('.' + errorBorder);
         if (firstError) {
@@ -643,9 +752,10 @@ function confirmetest(event) {
         }
     }
     
-    
     return false; 
 }
-  
+
+
+
 </script>
 </html>
