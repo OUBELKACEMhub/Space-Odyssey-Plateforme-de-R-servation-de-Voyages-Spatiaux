@@ -95,12 +95,11 @@
         display: none;
     }
 
-    /* Style dyal l-ticket l-dakhli (optional) */
     #ticketContent h3 {
         font-family: 'Orbitron', sans-serif;
         font-size: 1.5rem;
-        color: #16213e; /* space-purple */
-        border-bottom: 2px solid #0ea5e9; /* neon-blue */
+        color: #16213e; 
+        border-bottom: 2px solid #0ea5e9;
         padding-bottom: 8px;
         margin-top: 16px;
         margin-bottom: 12px;
@@ -329,9 +328,9 @@ const addPassenger = document.getElementById('addPassenger');
 const ticket = document.getElementById('ticket'); 
 
 let currentBookingDetails = {}; 
-let count = 2;
+let count = 2; 
 
-
+// ===== 2. Functions dyal Passengers =====
 function ajoutepassager() {
   if (selectG.checked && count <= 6) {
     addPassenger.innerHTML += `
@@ -394,7 +393,7 @@ function checkSelection() {
     craftBtn.forEach(el => el.classList.remove('active'));
 }
 
-//event of passangers
+// ===== 3. Event Listeners dyal Passengers =====
 addpBtn.addEventListener("click", ajoutepassager);
 selectS.addEventListener('input', checkSelection);
 selectC.addEventListener('input', checkSelection);
@@ -402,7 +401,7 @@ selectG.addEventListener('input', checkSelection);
 window.addEventListener('load', checkSelection);
 
 
-// Fetch dyal Destinations
+// ===== 4. Fetch dyal Destinations =====
 fetch('destinations.json') 
   .then(response => {
     if (!response.ok) {
@@ -651,6 +650,7 @@ fetch('destinations.json')
         displayForme(select.value);
     }
 
+  })
   .catch(error => {
     console.error('Error loading destinations JSON:', error);
     centent.innerHTML = `<p class="text-red-400">Error: Couldn't load destination data. ${error.message}</p>`;
@@ -668,7 +668,6 @@ function confirmetest(event) {
         return false;
     }
 
-    // 2. Validation dyal l-form
     let isValid = true; 
     const formB = document.getElementById('formB'); 
     const errorBorder = 'border-red-500', defaultBorder = 'border-cyan-300';
@@ -733,18 +732,18 @@ function confirmetest(event) {
         const bookingData = {
             passengers: passengers,
             journey: journeyDetails,
-            price: currentBookingDetails,
-            bookedAt: new Date().toISOString()
+            price: currentBookingDetails, 
+            bookedAt: new Date().toISOString() 
         };
 
-        // D. save at ocalStorage
         localStorage.setItem('latestBooking', JSON.stringify(bookingData));
 
-        
+      
         alert('Booking Confirmed! Redirecting to your ticket...');
         window.location.href = 'MyBooking.html'; 
         
     } else {
+   
         alert('Please check the fields marked in red. All passenger details are required and must be valid.');
         const firstError = formB.querySelector('.' + errorBorder);
         if (firstError) {
